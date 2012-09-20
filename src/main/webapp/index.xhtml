@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+        >
+
+<h:head>
+
+</h:head>
+
+<h:body>
+    <h1>BattleShip with webSockets</h1>
+    #{playerSession.game.secondPlayerJoined}
+    #{playerSession.player}
+
+
+    <h:form id="form">
+        <h:outputText id="out" value="#{globalCounter.count}" styleClass="ui-widget display"/>
+
+        <br/>
+
+        <p:commandButton value="Click" actionListener="#{globalCounter.increment}"/>
+    </h:form>
+
+    <script type="text/javascript">
+        function handleMessage(data) {
+            var element = $(PrimeFaces.escapeClientId('form:out'));
+            element.html(data);
+        }
+    </script>
+    <p:socket onMessage="handleMessage" channel="/counter"/>
+</h:body>
+</html>
