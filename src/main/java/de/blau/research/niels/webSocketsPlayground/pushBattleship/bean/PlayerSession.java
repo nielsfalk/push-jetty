@@ -41,10 +41,7 @@ public class PlayerSession {
     }
 
     public void nextGame() {
-        if (!getGame().isSecondPlayerJoined()) {
-            //destroy pending game
-            gameApp.joinOrCreateMatch();
-        }
+        gameApp.deletePendingGame(game);
         player = null;
         game = null;
     }

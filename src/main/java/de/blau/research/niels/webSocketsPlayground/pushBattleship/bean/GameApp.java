@@ -28,6 +28,12 @@ public class GameApp {
         }
     }
 
+    public void deletePendingGame(Game game) {
+        if (!game.isSecondPlayerJoined()) {
+            joinOrCreateMatch();
+        }
+    }
+
     public static class Game {
         private static int chanelIdCounter = 0;
         public final Match match = new Match();
