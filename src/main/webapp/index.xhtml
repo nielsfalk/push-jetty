@@ -11,10 +11,6 @@
 
 <h:body>
     <h1>BattleShip with primePush</h1>
-    #{playerSession.game.secondPlayerJoined}
-    #{playerSession.player}
-
-    #{facesContext.externalContext.getSession(false).id}
     <script type="text/javascript">
         var attack = function (position) {
             $("#fire_position").val(position);
