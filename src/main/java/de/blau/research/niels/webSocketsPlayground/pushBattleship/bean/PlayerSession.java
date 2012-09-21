@@ -41,6 +41,7 @@ public class PlayerSession {
     }
 
     public void nextGame() {
+        simpleResponse("playerLeft");
         gameApp.deletePendingGame(game);
         player = null;
         game = null;
@@ -74,7 +75,7 @@ public class PlayerSession {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("player", player.name());
         if (getGame().match.getWinner() != null) {
-            jsonObject.put("winner", getGame().match.getWinner());
+            jsonObject.put("winner", getGame().match.getWinner().name());
 
         }
         return jsonObject;
@@ -90,6 +91,9 @@ public class PlayerSession {
     }
 
     public Match.Player getPlayer() {
+        if (player == null) {
+            getGame();
+        }
         return player;
     }
 
