@@ -22,20 +22,21 @@
         };
 
         var handleMessage = function (data) {
+            alert(data);
 
-        }
+        };
     </script>
     <h:form id="fire" style="display: none;">
         <h:inputHidden id="position" value="#{playerSession.firePosition}"/>
         <p:commandLink id="submit" action="#{playerSession.fire}">#</p:commandLink>
     </h:form>
 
-    <div id="other">Enemy:
+    <div id="enemy">Enemy:
         <table class="field">
             <ui:repeat value="#{playerSession.enemyField}" var="row">
                 <tr>
                     <ui:repeat value="#{row}" var="field">
-                        <td class="#{field.state}" id="other#{field.position}" onclick="attack('#{field.position}')"/>
+                        <td class="#{field.state}" id="enemy#{field.position}" onclick="attack('#{field.position}')"/>
                     </ui:repeat>
                 </tr>
             </ui:repeat>
@@ -54,23 +55,6 @@
         </table>
     </div>
 
-
-    <h:form id="form">
-        <h:outputText id="out" value="#{globalCounter.count}" styleClass="ui-widget display"/>
-
-        <br/>
-
-        <p:commandButton value="Click" actionListener="#{globalCounter.increment}"/>
-    </h:form>
-
-    <script type="text/javascript">
-        function handleMessage(data) {
-            var element = $(PrimeFaces.escapeClientId('form:out'));
-            element.html(data);
-        }
-    </script>
-
     <p:socket channel="/battleShip#{playerSession.game.chanelId}" onMessage="handleMessage"/>
-    <p:socket onMessage="handleMessage" channel="/counter"/>
 </h:body>
 </html>

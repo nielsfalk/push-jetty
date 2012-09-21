@@ -2,12 +2,14 @@ package de.blau.research.niels.webSocketsPlayground.pushBattleship.bean;
 
 import de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Field;
 import de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match;
+import org.json.JSONObject;
 import org.primefaces.push.PushContextFactory;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match.Player.first;
 import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match.Player.second;
@@ -36,7 +38,32 @@ public class PlayerSession {
 
     public void fire() {
         Field.CellState shoot = getGame().match.shoot(player, firePosition);
-        PushContextFactory.getDefault().getPushContext().push("/battleShip" + getGame().getChanelId(), shoot.name());
+        if (!getGame().isSecondPlayerJoined()) {
+            simpleResponse("wait");
+        }
+        if (getGame().match.whoSNext() != player) {
+            simpleResponse("othersTurn");
+        }
+        JSONObject jsonObject = baseResponse();
+        jsonObject.put("fired", shoot.name());
+        jsonObject.put("position", firePosition);
+        respond(jsonObject);
+    }
+
+    void simpleResponse(String command) {
+        JSONObject jsonObject = baseResponse();
+        jsonObject.put(command, true);
+        respond(jsonObject);
+    }
+
+    private JSONObject baseResponse() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("player", player.name());
+        return jsonObject;
+    }
+
+    private Future<String> respond(JSONObject jsonObject) {
+        return PushContextFactory.getDefault().getPushContext().push("/battleShip" + getGame().getChanelId(), jsonObject.toString());
     }
 
     @SuppressWarnings("UnusedDeclaration")//ManagedProperty
