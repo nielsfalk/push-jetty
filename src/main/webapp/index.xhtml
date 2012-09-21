@@ -32,11 +32,6 @@
             if (command.secondEntered) {
                 notify("someone entered the game", "here we go");
             }
-            if (command.playerLeft) {
-                if (me != command.player) {
-                    notify("gameOver", "the other left game")
-                }
-            }
             if (command.othersTurn) {
                 if (me == command.player) {
                     notify("pleas wait", "it's not your turn");
@@ -52,7 +47,12 @@
                 notify((my ? "the other" : "you") + " shot", msg)
             }
             if (command.winner) {
-                notify("game over", "you " + me != command.winner ? "lose!" : "won!");
+                notify("game over", "you " + (me != command.winner ? "lose!" : "are th winner!"));
+            }
+            if (command.playerLeft) {
+                if (me != command.player) {
+                    notify("gameOver", "the other left game")
+                }
             }
         }
     </script>
