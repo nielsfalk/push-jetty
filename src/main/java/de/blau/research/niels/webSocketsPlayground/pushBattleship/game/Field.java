@@ -1,7 +1,5 @@
 package de.blau.research.niels.webSocketsPlayground.pushBattleship.game;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,16 +43,6 @@ public class Field {
             }
         }
         return tried;
-    }
-
-    public String toJson() {
-        JSONObject ret = new JSONObject();
-        ArrayList<String> ships = new ArrayList<String>();
-        for (Position shipPosition : shipPositions) {
-            ships.add('"' + shipPosition.toString() + '"');
-        }
-        ret.put("ships", ships);
-        return ret.toString();
     }
 
 

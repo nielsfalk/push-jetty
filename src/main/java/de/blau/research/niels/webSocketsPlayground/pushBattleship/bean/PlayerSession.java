@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import java.util.List;
-import java.util.concurrent.Future;
 
 import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match.Player.first;
 import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match.Player.second;
@@ -70,8 +69,8 @@ public class PlayerSession {
         return jsonObject;
     }
 
-    private Future<String> respond(JSONObject jsonObject) {
-        return PushContextFactory.getDefault().getPushContext().push("/battleShip" + getGame().getChanelId(), jsonObject.toString());
+    private void respond(JSONObject jsonObject) {
+        PushContextFactory.getDefault().getPushContext().push("/battleShip" + getGame().getChanelId(), jsonObject.toString());
     }
 
     @SuppressWarnings("UnusedDeclaration")//ManagedProperty
