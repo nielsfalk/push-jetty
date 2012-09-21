@@ -30,15 +30,20 @@ public class PlayerSession {
     public GameApp.Game getGame() {
         if (game == null) {
             game = gameApp.joinOrCreateMatch();
-            player = game.isSecondPlayerJoined() ? second : first;
+            if (game.isSecondPlayerJoined()) {
+                player = second;
+                simpleResponse("secondEntered");
+            } else {
+                player = first;
+            }
         }
         return game;
     }
 
     public void fire() {
         if (getGame().match.getWinner() != null) {
-            game = null;
-            player = null;
+            JSONObject jsonObject = baseResponse();
+            respond(jsonObject);
         } else if (!getGame().isSecondPlayerJoined()) {
             simpleResponse("wait");
         } else if (getGame().match.whoSNext() != player) {
@@ -48,11 +53,7 @@ public class PlayerSession {
             JSONObject jsonObject = baseResponse();
             jsonObject.put("fired", shoot.name());
             jsonObject.put("position", firePosition);
-            if (getGame().match.getWinner() != null) {
-                jsonObject.put("gameOver", getGame().match.getWinner());
-                game = null;
-                player = null;
-            }
+
             respond(jsonObject);
         }
     }
@@ -66,6 +67,10 @@ public class PlayerSession {
     private JSONObject baseResponse() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("player", player.name());
+        if (getGame().match.getWinner() != null) {
+            jsonObject.put("winner", getGame().match.getWinner());
+
+        }
         return jsonObject;
     }
 

@@ -6,11 +6,6 @@
 
 <h:head>
     <h:outputStylesheet name="style.css"/>
-
-</h:head>
-
-<h:body>
-    <h1>BattleShip with primePush</h1>
     <script type="text/javascript">
         var attack = function (position) {
             $("#fire_position").val(position);
@@ -18,20 +13,52 @@
         };
         var me = "#{playerSession.player}";
 
+        var notify = function (summary, detail) {
+            console.log("notification:" + summary + " " + detail);
+            growl.show([
+                {
+                    "summary":summary,
+                    "detail":detail,
+                    "renndered":false,
+                    "severity":"info"}
+            ]);
+        }
+
         var handleMessage = function (data) {
             console.log("received:" + data);
+            notify("some sumary", "details");
+
             var command = eval("(" + data + ")");
+
+            if (command.winner) {
+                notify("game over", "you " + me == command.winner ? "won!" : "lose!");
+                return;
+            }
+            if (command.secondEntered) {
+                notify("someone entered the game", "here we go");
+            }
             if (command.fired) {
                 var missed = command.status == "tried";
                 var my = me != command.player;
                 $((my ? "#my" : "#enemy") + command.position).removeClass('notYetDetected').addClass(command.fired);
             }
-            if (command.gameOver) {
-                alert(me == command.gameOver ? "you won!" : "game over");
-            }
 
-        };
+
+        }
     </script>
+</h:head>
+
+<h:body>
+    <h1>BattleShip with primePush</h1>
+    <p:growl widgetVar="growl" showDetail="true"/>
+    <ui:fragment rendered="#{!playerSession.game.secondPlayerJoined}">
+        <script type="text/javascript">
+            $(document).ready(function () {
+                notify("you are alone", "waiting for another player");
+            });
+        </script>
+    </ui:fragment>
+
     <h:form id="fire" style="display: none;">
         <h:inputHidden id="position" value="#{playerSession.firePosition}"/>
         <p:commandLink id="submit" action="#{playerSession.fire}">#</p:commandLink>
