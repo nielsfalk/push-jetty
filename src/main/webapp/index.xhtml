@@ -2,16 +2,53 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-        >
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
+    <h:outputStylesheet name="style.css"/>
 
 </h:head>
 
 <h:body>
-    <h1>BattleShip with webSockets</h1>
+    <h1>BattleShip with primePush</h1>
     #{playerSession.game.secondPlayerJoined}
     #{playerSession.player}
+
+    #{facesContext.externalContext.getSession(false).id}
+    <script type="text/javascript">
+        var attack = function (position) {
+            $("#fire_position").val(position);
+            $("#fire_submit").click();
+        };
+    </script>
+    <h:form id="fire" style="display: none;">
+        <h:inputHidden id="position" value="#{playerSession.firePosition}"/>
+        <p:commandLink id="submit" action="#{playerSession.fire}">#</p:commandLink>
+    </h:form>
+
+    <div id="other">Enemy:
+        <table class="field">
+            <ui:repeat value="#{playerSession.enemyField}" var="row">
+                <tr>
+                    <ui:repeat value="#{row}" var="field">
+                        <td class="#{field.state}" id="other#{field.position}" onclick="attack('#{field.position}')"/>
+                    </ui:repeat>
+                </tr>
+            </ui:repeat>
+        </table>
+    </div>
+
+    <div id="other">My:
+        <table class="field">
+            <ui:repeat value="#{playerSession.myField}" var="row">
+                <tr>
+                    <ui:repeat value="#{row}" var="field">
+                        <td class="#{field.state}" id="other#{field.position}"/>
+                    </ui:repeat>
+                </tr>
+            </ui:repeat>
+        </table>
+    </div>
 
 
     <h:form id="form">
@@ -28,6 +65,8 @@
             element.html(data);
         }
     </script>
+
+    <p:socket channel="/battleShip"/>
     <p:socket onMessage="handleMessage" channel="/counter"/>
 </h:body>
 </html>

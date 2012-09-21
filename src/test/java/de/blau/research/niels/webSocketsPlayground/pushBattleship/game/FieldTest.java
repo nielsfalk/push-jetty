@@ -5,8 +5,8 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Field.Cell.hit;
-import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Field.Cell.tried;
+import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Field.CellState.hit;
+import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Field.CellState.tried;
 import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Ship.Direction.horizontal;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

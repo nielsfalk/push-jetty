@@ -1,0 +1,38 @@
+table.field {
+    border-collapse: collapse;
+    border: 1px solid silver;
+}
+
+table.field td {
+    border: 1px solid silver;
+    height: 20px;
+    width: 20px;
+}
+
+.notYetDetected {
+    background-color: black;
+}
+
+.tried {
+    background-color: #d3d3d3;
+}
+
+.hit {
+    background-color: #ff0000;
+}
+
+#gameStatus {
+    color: #ff0000;
+    width: 200px;
+    text-align: center;
+    font-weight: bold
+}
+
+body {
+    font: 12px arial;
+    color: #222;
+    text-align: center;
+    padding: 35px;
+}
+
+

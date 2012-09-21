@@ -22,18 +22,18 @@ public class Match {
         return nextToShoot;
     }
 
-    public Field.Cell shoot(Player player, Position position) {
+    public Field.CellState shoot(Player player, Position position) {
         if (player != nextToShoot) {
             throw new IllegalArgumentException("not your turn " + player);
         }
         Player enemy = player.getEnemy();
         Field enemyField = fields.get(enemy);
-        Field.Cell shout = enemyField.shout(position);
+        Field.CellState shout = enemyField.shout(position);
         if (enemyField.allShipsDestroyed()) {
             winner = player;
             nextToShoot = null;
         } else {
-            if (shout == Field.Cell.tried)
+            if (shout == Field.CellState.tried)
                 nextToShoot = enemy;
         }
         return shout;
@@ -43,7 +43,7 @@ public class Match {
         return winner;
     }
 
-    public Field.Cell shoot(Player player, String text) {
+    public Field.CellState shoot(Player player, String text) {
         return shoot(player, new Position(text));
     }
 

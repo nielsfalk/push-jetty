@@ -1,10 +1,13 @@
 package de.blau.research.niels.webSocketsPlayground.pushBattleship.bean;
 
+import de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Field;
 import de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match;
+import de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Position;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import java.util.List;
 
 import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match.Player.first;
 import static de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match.Player.second;
@@ -21,6 +24,7 @@ public class PlayerSession {
     private GameApp gameApp;
     private Match.Player player;
     private GameApp.Game game;
+    private String firePosition;
 
     public GameApp.Game getGame() {
         if (game == null) {
@@ -30,11 +34,32 @@ public class PlayerSession {
         return game;
     }
 
+    public void fire() {
+        new Position(firePosition);
+    }
+
+    @SuppressWarnings("UnusedDeclaration")//ManagedProperty
     public void setGameApp(GameApp gameApp) {
         this.gameApp = gameApp;
     }
 
     public Match.Player getPlayer() {
         return player;
+    }
+
+    public List<List<Field.DrawableCell>> getMyField() {
+        return getGame().match.fields.get(player).toDrawable(false);
+    }
+
+    public List<List<Field.DrawableCell>> getEnemyField() {
+        return getGame().match.fields.get(player.getEnemy()).toDrawable(true);
+    }
+
+    public void setFirePosition(String firePosition) {
+        this.firePosition = firePosition;
+    }
+
+    public String getFirePosition() {
+        return firePosition;
     }
 }
