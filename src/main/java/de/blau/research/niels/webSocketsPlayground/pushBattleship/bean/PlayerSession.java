@@ -37,17 +37,25 @@ public class PlayerSession {
     }
 
     public void fire() {
-        Field.CellState shoot = getGame().match.shoot(player, firePosition);
-        if (!getGame().isSecondPlayerJoined()) {
+        if (getGame().match.getWinner() != null) {
+            game = null;
+            player = null;
+        } else if (!getGame().isSecondPlayerJoined()) {
             simpleResponse("wait");
-        }
-        if (getGame().match.whoSNext() != player) {
+        } else if (getGame().match.whoSNext() != player) {
             simpleResponse("othersTurn");
+        } else {
+            Field.CellState shoot = getGame().match.shoot(player, firePosition);
+            JSONObject jsonObject = baseResponse();
+            jsonObject.put("fired", shoot.name());
+            jsonObject.put("position", firePosition);
+            if (getGame().match.getWinner() != null) {
+                jsonObject.put("gameOver", getGame().match.getWinner());
+                game = null;
+                player = null;
+            }
+            respond(jsonObject);
         }
-        JSONObject jsonObject = baseResponse();
-        jsonObject.put("fired", shoot.name());
-        jsonObject.put("position", firePosition);
-        respond(jsonObject);
     }
 
     void simpleResponse(String command) {

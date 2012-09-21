@@ -20,9 +20,19 @@
             $("#fire_position").val(position);
             $("#fire_submit").click();
         };
+        var me = "#{playerSession.player}";
 
         var handleMessage = function (data) {
-            alert(data);
+            console.log("received:" + data);
+            var command = eval("(" + data + ")");
+            if (command.fired) {
+                var missed = command.status == "tried";
+                var my = me != command.player;
+                $((my ? "#my" : "#enemy") + command.position).removeClass('notYetDetected').addClass(command.fired);
+            }
+            if (command.gameOver) {
+                alert(me == command.gameOver ? "you won!" : "game over");
+            }
 
         };
     </script>
@@ -48,7 +58,7 @@
             <ui:repeat value="#{playerSession.myField}" var="row">
                 <tr>
                     <ui:repeat value="#{row}" var="field">
-                        <td class="#{field.state}" id="other#{field.position}"/>
+                        <td class="#{field.state}" id="my#{field.position}"/>
                     </ui:repeat>
                 </tr>
             </ui:repeat>
