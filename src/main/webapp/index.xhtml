@@ -8,8 +8,8 @@
     <h:outputStylesheet name="style.css"/>
     <script type="text/javascript">
         var attack = function (position) {
-            $("#fire_position").val(position);
-            $("#fire_submit").click();
+            $("#form_position").val(position);
+            $("#form_submit").click();
         };
         var me = "#{playerSession.player}";
 
@@ -59,9 +59,11 @@
         </script>
     </ui:fragment>
 
-    <h:form id="fire" style="display: none;">
+    <h:form id="form">
         <h:inputHidden id="position" value="#{playerSession.firePosition}"/>
-        <p:commandLink id="submit" action="#{playerSession.fire}">#</p:commandLink>
+        <p:commandLink id="submit" action="#{playerSession.fire}" style="display: none;">#</p:commandLink>
+        <p:commandButton value="newGame" action="#{playerSession.nextGame}" ajax="false"/>
+
     </h:form>
 
     <div id="enemy">Enemy:

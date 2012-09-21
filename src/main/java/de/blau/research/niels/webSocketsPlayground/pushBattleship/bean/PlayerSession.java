@@ -40,6 +40,15 @@ public class PlayerSession {
         return game;
     }
 
+    public void nextGame() {
+        if (!getGame().isSecondPlayerJoined()) {
+            //destroy pending game
+            gameApp.joinOrCreateMatch();
+        }
+        player = null;
+        game = null;
+    }
+
     public void fire() {
         if (getGame().match.getWinner() != null) {
             JSONObject jsonObject = baseResponse();
