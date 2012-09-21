@@ -2,7 +2,7 @@ package de.blau.research.niels.webSocketsPlayground.pushBattleship.bean;
 
 import de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Field;
 import de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Match;
-import de.blau.research.niels.webSocketsPlayground.pushBattleship.game.Position;
+import org.primefaces.push.PushContextFactory;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -35,7 +35,8 @@ public class PlayerSession {
     }
 
     public void fire() {
-        new Position(firePosition);
+        Field.CellState shoot = getGame().match.shoot(player, firePosition);
+        PushContextFactory.getDefault().getPushContext().push("/battleShip" + getGame().getChanelId(), shoot.name());
     }
 
     @SuppressWarnings("UnusedDeclaration")//ManagedProperty

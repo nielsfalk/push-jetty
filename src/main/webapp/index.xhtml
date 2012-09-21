@@ -20,6 +20,10 @@
             $("#fire_position").val(position);
             $("#fire_submit").click();
         };
+
+        var handleMessage = function (data) {
+
+        }
     </script>
     <h:form id="fire" style="display: none;">
         <h:inputHidden id="position" value="#{playerSession.firePosition}"/>
@@ -66,7 +70,7 @@
         }
     </script>
 
-    <p:socket channel="/battleShip"/>
+    <p:socket channel="/battleShip#{playerSession.game.chanelId}" onMessage="handleMessage"/>
     <p:socket onMessage="handleMessage" channel="/counter"/>
 </h:body>
 </html>

@@ -29,16 +29,21 @@ public class GameApp {
     }
 
     public static class Game {
-        private static int chanelPrefixCounter = 0;
+        private static int chanelIdCounter = 0;
         public final Match match = new Match();
         private boolean secondPlayerJoined = false;
+        private final int chanelId;
 
         public Game() {
-            chanelPrefixCounter = chanelPrefixCounter++;
+            chanelId = chanelIdCounter++;
         }
 
         public boolean isSecondPlayerJoined() {
             return secondPlayerJoined;
+        }
+
+        public int getChanelId() {
+            return chanelId;
         }
     }
 }
